@@ -1,0 +1,6 @@
+{
+  "name": "NeuroMetric: Precision Behavioral Experiment Platform",
+  "description": "High-precision web platform for cognitive scientists to build, calibrate, deploy, and analyze behavioral experiments with sub-millisecond timing accuracy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
