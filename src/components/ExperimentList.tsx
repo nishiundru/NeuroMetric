@@ -54,35 +54,35 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Protocol Status Banner */}
-      <div className="border border-slate-800 bg-slate-900/60 p-6 rounded-lg">
+      <div className="border border-[#e2e2e2] bg-white p-6 rounded">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-1.5">
-            <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400" />
+            <div className="flex items-center gap-2 text-xs text-[#6b7280] font-mono">
+              <span className="inline-block w-2 h-2 rounded-full bg-[#007fd7]" />
               <span>LABORATORY TIMING SUBSYSTEM: CALIBRATED</span>
               <span aria-hidden="true">·</span>
               <span>HARDWARE RAF CLOCK ACTIVE</span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">
+            <h1 className="text-2xl font-bold tracking-tight text-[#3f3f3f]">
               Behavioral Experiment Protocols
             </h1>
-            <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
+            <p className="text-sm text-[#6b7280] max-w-2xl leading-relaxed">
               Design, test, and deploy cognitive psychology paradigms with frame-locked visual stimulus onset, sub-millisecond keyboard response timestamping, and crowd recruitment pipelines.
             </p>
           </div>
 
-          <div className="flex items-center gap-6 divide-x divide-slate-800">
+          <div className="grid grid-cols-3 sm:flex sm:items-center gap-3 sm:gap-6 sm:divide-x divide-[#e2e2e2] pt-4 sm:pt-0 border-t sm:border-t-0 border-[#e2e2e2]">
             <div className="space-y-0.5">
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-mono">Active Protocols</div>
-              <div className="text-2xl font-bold text-white font-mono tabular-nums">{experiments.length}</div>
+              <div className="text-[10px] sm:text-xs uppercase tracking-wider text-[#6b7280] font-mono">Active Protocols</div>
+              <div className="text-xl sm:text-2xl font-bold text-[#3f3f3f] font-mono tabular-nums">{experiments.length}</div>
             </div>
-            <div className="pl-6 space-y-0.5">
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-mono">Raster Timing Precision</div>
-              <div className="text-2xl font-bold text-cyan-400 font-mono tabular-nums">±0.4 ms</div>
+            <div className="sm:pl-6 space-y-0.5">
+              <div className="text-[10px] sm:text-xs uppercase tracking-wider text-[#6b7280] font-mono">Timing Precision</div>
+              <div className="text-xl sm:text-2xl font-bold text-[#007fd7] font-mono tabular-nums">±0.4 ms</div>
             </div>
-            <div className="pl-6 space-y-0.5">
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-mono">IRB Verified</div>
-              <div className="text-2xl font-bold text-emerald-400 font-mono tabular-nums">100%</div>
+            <div className="sm:pl-6 space-y-0.5">
+              <div className="text-[10px] sm:text-xs uppercase tracking-wider text-[#6b7280] font-mono">IRB Verified</div>
+              <div className="text-xl sm:text-2xl font-bold text-[#3f3f3f] font-mono tabular-nums">100%</div>
             </div>
           </div>
         </div>
@@ -91,53 +91,53 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         {/* Interactive Segmented Filter Tabs */}
-        <div className="flex items-center gap-1 p-1 bg-slate-950 border border-slate-800 rounded-lg overflow-x-auto">
+        <div className="flex items-center gap-1 p-1 bg-white border border-[#e2e2e2] rounded overflow-x-auto">
           <button
             onClick={() => setFilterParadigm('all')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap transition-colors ${
+            className={`px-3 py-1.5 text-xs font-medium rounded whitespace-nowrap transition-colors ${
               filterParadigm === 'all'
-                ? 'bg-slate-800 text-white'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#3f3f3f] text-white'
+                : 'text-[#6b7280] hover:text-[#3f3f3f]'
             }`}
           >
             All Paradigms ({experiments.length})
           </button>
           <button
             onClick={() => setFilterParadigm('stroop')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap transition-colors ${
+            className={`px-3 py-1.5 text-xs font-medium rounded whitespace-nowrap transition-colors ${
               filterParadigm === 'stroop'
-                ? 'bg-slate-800 text-white'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#3f3f3f] text-white'
+                : 'text-[#6b7280] hover:text-[#3f3f3f]'
             }`}
           >
             Stroop
           </button>
           <button
             onClick={() => setFilterParadigm('flanker')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap transition-colors ${
+            className={`px-3 py-1.5 text-xs font-medium rounded whitespace-nowrap transition-colors ${
               filterParadigm === 'flanker'
-                ? 'bg-slate-800 text-white'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#3f3f3f] text-white'
+                : 'text-[#6b7280] hover:text-[#3f3f3f]'
             }`}
           >
             Flanker
           </button>
           <button
             onClick={() => setFilterParadigm('n_back')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap transition-colors ${
+            className={`px-3 py-1.5 text-xs font-medium rounded whitespace-nowrap transition-colors ${
               filterParadigm === 'n_back'
-                ? 'bg-slate-800 text-white'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#3f3f3f] text-white'
+                : 'text-[#6b7280] hover:text-[#3f3f3f]'
             }`}
           >
             N-Back
           </button>
           <button
             onClick={() => setFilterParadigm('go_nogo')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap transition-colors ${
+            className={`px-3 py-1.5 text-xs font-medium rounded whitespace-nowrap transition-colors ${
               filterParadigm === 'go_nogo'
-                ? 'bg-slate-800 text-white'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#3f3f3f] text-white'
+                : 'text-[#6b7280] hover:text-[#3f3f3f]'
             }`}
           >
             Go / No-Go
@@ -150,7 +150,7 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
             placeholder="Search protocols by name, IRB, or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full sm:w-80 px-3.5 py-1.5 text-xs bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-md focus:outline-none focus:border-cyan-500 font-sans"
+            className="w-full sm:w-80 px-3.5 py-1.5 text-xs bg-white border border-[#e2e2e2] text-[#3f3f3f] placeholder-[#9ca3af] rounded focus:outline-none focus:border-[#007fd7] font-sans"
           />
         </div>
       </div>
@@ -164,14 +164,14 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
           return (
             <div
               key={exp.id}
-              className={`border rounded-lg bg-slate-900/40 p-6 flex flex-col justify-between transition-colors ${
-                isSelected ? 'border-cyan-500/80 bg-slate-900/70' : 'border-slate-800 hover:border-slate-700'
+              className={`border rounded bg-white p-6 flex flex-col justify-between transition-colors ${
+                isSelected ? 'border-[#007fd7]' : 'border-[#e2e2e2] hover:border-[#c5c8cc]'
               }`}
             >
               <div className="space-y-3">
                 {/* Clean unboxed metadata with separators */}
-                <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-                  <span className="text-cyan-400 font-medium">{getParadigmLabel(exp.paradigmType)}</span>
+                <div className="flex items-center gap-2 text-xs text-[#6b7280] font-mono">
+                  <span className="text-[#007fd7] font-medium">{getParadigmLabel(exp.paradigmType)}</span>
                   <span aria-hidden="true">·</span>
                   <span>{exp.recruitment.irbProtocolNumber}</span>
                   <span aria-hidden="true">·</span>
@@ -180,43 +180,43 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
                   <span>{exp.timingSettings.targetFrameRate}Hz sync</span>
                 </div>
 
-                <h3 className="text-lg font-semibold text-white tracking-tight leading-snug">
+                <h3 className="text-lg font-semibold text-[#3f3f3f] tracking-tight leading-snug">
                   {exp.title}
                 </h3>
 
-                <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                <p className="text-xs text-[#6b7280] leading-relaxed line-clamp-2">
                   {exp.description}
                 </p>
 
                 {/* Structure metrics */}
-                <div className="pt-2 grid grid-cols-3 gap-2 py-2 border-y border-slate-800/80 text-xs font-mono">
+                <div className="pt-2 grid grid-cols-3 gap-2 py-2 border-y border-[#e2e2e2] text-xs font-mono">
                   <div>
-                    <span className="text-slate-400 text-[11px] block">Blocks</span>
-                    <span className="text-slate-200 font-semibold tabular-nums">{exp.blocks.length} sections</span>
+                    <span className="text-[#6b7280] text-[11px] block">Blocks</span>
+                    <span className="text-[#3f3f3f] font-semibold tabular-nums">{exp.blocks.length} sections</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 text-[11px] block">Total Trials</span>
-                    <span className="text-slate-200 font-semibold tabular-nums">{totalTrials} trials</span>
+                    <span className="text-[#6b7280] text-[11px] block">Total Trials</span>
+                    <span className="text-[#3f3f3f] font-semibold tabular-nums">{totalTrials} trials</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 text-[11px] block">Target Sample</span>
-                    <span className="text-slate-200 font-semibold tabular-nums">N = {exp.recruitment.targetSampleN}</span>
+                    <span className="text-[#6b7280] text-[11px] block">Target Sample</span>
+                    <span className="text-[#3f3f3f] font-semibold tabular-nums">N = {exp.recruitment.targetSampleN}</span>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-5 mt-4 flex items-center justify-between gap-2 border-t border-slate-800/60">
-                <div className="flex items-center gap-1.5">
+              <div className="pt-4 mt-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 border-t border-[#e2e2e2]">
+                <div className="flex flex-wrap items-center gap-1.5">
                   <button
                     onClick={() => {
                       onSelectExperiment(exp);
                       onOpenBuilder(exp);
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-800/80 rounded hover:bg-slate-700 hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium text-[#3f3f3f] bg-[#f8f9fa] border border-[#e2e2e2] rounded hover:bg-[#e9ecef] transition-colors"
                   >
                     <Sliders className="w-3.5 h-3.5" />
-                    <span>Edit Timeline</span>
+                    <span>Timeline</span>
                   </button>
 
                   <button
@@ -224,7 +224,7 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
                       onSelectExperiment(exp);
                       onOpenAnalytics(exp);
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-800/80 rounded hover:bg-slate-700 hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium text-[#3f3f3f] bg-[#f8f9fa] border border-[#e2e2e2] rounded hover:bg-[#e9ecef] transition-colors"
                   >
                     <BarChart2 className="w-3.5 h-3.5" />
                     <span>Data</span>
@@ -232,13 +232,13 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
 
                   <button
                     onClick={() => handleCopyLink(exp.id)}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 bg-slate-950 border border-slate-800 rounded hover:border-slate-700 transition-colors"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#6b7280] hover:text-[#3f3f3f] bg-white border border-[#e2e2e2] rounded hover:border-[#c5c8cc] transition-colors"
                     title="Copy Participant Recruitment Link"
                   >
                     {copiedId === exp.id ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span className="text-emerald-400">Copied</span>
+                        <Check className="w-3.5 h-3.5 text-[#007fd7]" />
+                        <span className="text-[#007fd7]">Copied</span>
                       </>
                     ) : (
                       <>
@@ -254,9 +254,9 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
                     onSelectExperiment(exp);
                     onRunExperiment(exp);
                   }}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-slate-950 bg-cyan-400 rounded hover:bg-cyan-300 transition-colors whitespace-nowrap"
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-[#007fd7] rounded hover:bg-[#006db9] transition-colors whitespace-nowrap w-full sm:w-auto mt-1 sm:mt-0"
                 >
-                  <Play className="w-3 h-3 fill-slate-950" />
+                  <Play className="w-3 h-3 fill-white" />
                   <span>Run Session</span>
                 </button>
               </div>
@@ -266,11 +266,11 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
       </div>
 
       {filteredExperiments.length === 0 && (
-        <div className="border border-dashed border-slate-800 rounded-lg p-12 text-center space-y-4">
-          <p className="text-sm text-slate-400">No experimental protocols match your filter criteria.</p>
+        <div className="border border-dashed border-[#e2e2e2] bg-white rounded p-12 text-center space-y-4">
+          <p className="text-sm text-[#6b7280]">No experimental protocols match your filter criteria.</p>
           <button
             onClick={onNewExperiment}
-            className="px-4 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 rounded-md hover:bg-cyan-300"
+            className="px-4 py-2 text-xs font-semibold text-white bg-[#007fd7] rounded hover:bg-[#006db9]"
           >
             Create New Protocol
           </button>

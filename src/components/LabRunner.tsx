@@ -49,6 +49,44 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
   const currentBlock: ExperimentBlock | undefined = experiment.blocks[currentBlockIndex];
   const currentTrial: TrialTemplate | undefined = activeTrialsQueue[currentTrialIndex];
 
+  // Dynamic set of response keys for touch/mobile interactions
+  const availableResponseKeys = useMemo(() => {
+    if (!currentBlock || !currentBlock.trials) return [];
+    const keys = new Set<string>();
+    currentBlock.trials.forEach(t => {
+      if (t.correctKey && t.correctKey !== 'none') {
+        keys.add(t.correctKey);
+      }
+    });
+    if (keys.size === 0) {
+      keys.add('Space');
+    }
+    return Array.from(keys);
+  }, [currentBlock]);
+
+  const getKeyLabel = (key: string) => {
+    switch (key.toLowerCase()) {
+      case 'r': return 'R (Red)';
+      case 'g': return 'G (Green)';
+      case 'b': return 'B (Blue)';
+      case 'y': return 'Y (Yellow)';
+      case 'arrowleft': return '← Left Arrow';
+      case 'arrowright': return 'Right Arrow →';
+      case 'space': return 'Spacebar / Tap';
+      default: return key.toUpperCase();
+    }
+  };
+
+  const getKeyColor = (key: string) => {
+    switch (key.toLowerCase()) {
+      case 'r': return 'hover:border-rose-500 hover:text-rose-400';
+      case 'g': return 'hover:border-emerald-500 hover:text-emerald-400';
+      case 'b': return 'hover:border-blue-500 hover:text-blue-400';
+      case 'y': return 'hover:border-amber-500 hover:text-amber-400';
+      default: return 'hover:border-[#007fd7] hover:text-[#007fd7]';
+    }
+  };
+
   // Prepare trials for current block
   const prepareBlockTrials = useCallback((block: ExperimentBlock): TrialTemplate[] => {
     if (block.type === 'instruction' || block.type === 'debrief' || block.trials.length === 0) {
@@ -339,27 +377,27 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black text-slate-100 flex flex-col justify-between font-sans select-none">
+    <div className="fixed inset-0 z-50 bg-black text-slate-100 flex flex-col justify-between font-sans select-none overflow-hidden">
       {/* Top Participant Status HUD */}
-      <div className="px-6 py-3 border-b border-neutral-900 bg-neutral-950/80 flex items-center justify-between text-xs font-mono text-neutral-400">
-        <div className="flex items-center gap-3">
-          <span className="w-2 h-2 rounded-full bg-cyan-400" />
-          <span className="text-neutral-200 font-semibold">{experiment.title}</span>
-          <span aria-hidden="true">·</span>
-          <span>SUBJ: {participantIdRef.current}</span>
+      <div className="px-3 sm:px-6 py-2.5 sm:py-3 border-b border-neutral-900 bg-neutral-950/90 flex items-center justify-between text-xs font-mono text-neutral-400 gap-2">
+        <div className="flex items-center gap-2 truncate">
+          <span className="w-2 h-2 rounded-full bg-[#007fd7] shrink-0" />
+          <span className="text-neutral-200 font-semibold truncate max-w-[130px] sm:max-w-xs">{experiment.title}</span>
+          <span aria-hidden="true" className="hidden sm:inline text-neutral-700">·</span>
+          <span className="hidden sm:inline">SUBJ: {participantIdRef.current}</span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {phase !== 'consent' && phase !== 'debrief' && currentBlock && (
-            <span>
-              BLOCK {currentBlockIndex + 1}/{experiment.blocks.length}: {currentBlock.name}
+            <span className="text-[11px] sm:text-xs">
+              <span className="hidden sm:inline">BLOCK </span>{currentBlockIndex + 1}/{experiment.blocks.length}
               {activeTrialsQueue.length > 0 && ` (${currentTrialIndex + 1}/${activeTrialsQueue.length})`}
             </span>
           )}
 
           <button
             onClick={toggleFullscreen}
-            className="p-1 text-neutral-400 hover:text-white"
+            className="p-1.5 text-neutral-400 hover:text-white"
             title="Toggle Fullscreen"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -370,7 +408,7 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
               if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
               onExit();
             }}
-            className="p-1 text-neutral-400 hover:text-rose-400"
+            className="p-1.5 text-neutral-400 hover:text-rose-400"
             title="Exit Session"
           >
             <X className="w-4 h-4" />
@@ -379,16 +417,16 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
       </div>
 
       {/* Main Canvas Viewport */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+      <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 text-center overflow-y-auto">
         {/* Consent Phase */}
         {phase === 'consent' && (
-          <div className="max-w-xl text-left bg-neutral-950 border border-neutral-800 p-8 rounded-lg space-y-6">
-            <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">
-              <span className="w-2 h-2 rounded-full bg-cyan-400" />
+          <div className="max-w-xl w-full mx-auto text-left bg-neutral-950 border border-neutral-800 p-5 sm:p-8 rounded space-y-4 sm:space-y-6 max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#007fd7]">
+              <span className="w-2 h-2 rounded-full bg-[#007fd7]" />
               <span>INFORMED PARTICIPANT CONSENT</span>
             </div>
 
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               {experiment.title}
             </h2>
 
@@ -398,17 +436,17 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
               <div>Estimated Duration: {experiment.recruitment.estimatedMinutes} minutes</div>
             </div>
 
-            <div className="p-4 bg-neutral-900/80 rounded border border-neutral-800 text-xs text-neutral-300 leading-relaxed max-h-48 overflow-y-auto">
+            <div className="p-3 sm:p-4 bg-neutral-900/80 rounded border border-neutral-800 text-xs text-neutral-300 leading-relaxed max-h-40 sm:max-h-48 overflow-y-auto">
               {experiment.recruitment.consentText}
             </div>
 
-            <div className="pt-2 flex items-center justify-between">
-              <span className="text-xs font-mono text-neutral-500">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <span className="text-[11px] sm:text-xs font-mono text-neutral-500">
                 Data is strictly anonymized.
               </span>
               <button
                 onClick={handleAcceptConsent}
-                className="px-6 py-2 text-xs font-semibold text-neutral-950 bg-cyan-400 rounded hover:bg-cyan-300 transition-colors"
+                className="px-6 py-2.5 text-xs font-medium text-white bg-[#007fd7] rounded hover:bg-[#006cb8] transition-colors text-center"
               >
                 I Agree & Begin Study
               </button>
@@ -418,8 +456,8 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
 
         {/* Instructions Phase */}
         {phase === 'instructions' && currentBlock && (
-          <div className="max-w-lg bg-neutral-950 border border-neutral-800 p-8 rounded-lg space-y-6 text-left">
-            <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">
+          <div className="max-w-lg w-full mx-auto bg-neutral-950 border border-neutral-800 p-5 sm:p-8 rounded space-y-4 sm:space-y-6 text-left max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#007fd7]">
               <span>{currentBlock.name.toUpperCase()}</span>
             </div>
 
@@ -427,13 +465,13 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
               {currentBlock.instructionsText || 'Please follow the stimuli displayed on screen.'}
             </div>
 
-            <div className="pt-4 border-t border-neutral-900 flex items-center justify-between">
+            <div className="pt-4 border-t border-neutral-900 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <span className="text-xs font-mono text-neutral-500">
-                Press [ Space ] or click continue
+                Tap button or press [ Space ]
               </span>
               <button
                 onClick={() => startBlock(currentBlockIndex + 1)}
-                className="px-5 py-2 text-xs font-semibold text-neutral-950 bg-cyan-400 rounded hover:bg-cyan-300"
+                className="px-5 py-2.5 text-xs font-medium text-white bg-[#007fd7] rounded hover:bg-[#006cb8] text-center"
               >
                 Start Block
               </button>
@@ -443,21 +481,21 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
 
         {/* Fixation Cross Phase */}
         {phase === 'fixation' && (
-          <div className="text-white text-6xl font-mono select-none font-light">
+          <div className="text-white text-5xl sm:text-6xl font-mono select-none font-light">
             +
           </div>
         )}
 
         {/* Stimulus Presentation Phase */}
         {phase === 'stimulus' && currentTrial && (
-          <div className="space-y-8 select-none">
+          <div className="space-y-8 select-none w-full max-w-lg mx-auto">
             {currentTrial.stimulus.type === 'text' && (
               <div
                 style={{
                   color: currentTrial.stimulus.textColor || '#FFFFFF',
-                  fontSize: `${(currentTrial.stimulus.fontSize || 48) * 1.3}px`,
+                  fontSize: `clamp(32px, 8vw, ${(currentTrial.stimulus.fontSize || 48) * 1.3}px)`,
                 }}
-                className="font-bold tracking-wider"
+                className="font-bold tracking-wider break-words"
               >
                 {currentTrial.stimulus.text}
               </div>
@@ -465,10 +503,31 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
 
             {currentTrial.stimulus.type === 'shape' && (
               <div
-                className="w-32 h-32 rounded-full mx-auto"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto"
                 style={{ backgroundColor: currentTrial.stimulus.shapeFill || '#10B981' }}
               />
             )}
+
+            {/* Mobile-Friendly Response Touch Keypad (renders on-screen so touch/mobile participants can respond) */}
+            <div className="pt-6 sm:pt-8">
+              <div className="text-[11px] text-neutral-500 font-mono mb-2">
+                Tap to respond or use physical keyboard
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-md mx-auto">
+                {availableResponseKeys.map((key) => (
+                  <button
+                    key={key}
+                    onPointerDown={(e) => {
+                      e.preventDefault();
+                      handleResponse(key);
+                    }}
+                    className={`px-4 py-2.5 sm:px-5 sm:py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm font-mono font-medium text-neutral-200 active:scale-95 transition-all shadow-sm ${getKeyColor(key)}`}
+                  >
+                    {getKeyLabel(key)}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
@@ -476,11 +535,11 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
         {phase === 'feedback' && (
           <div className="space-y-2">
             {trialLogsRef.current[trialLogsRef.current.length - 1]?.isCorrect ? (
-              <div className="text-emerald-400 text-3xl font-bold font-mono">
+              <div className="text-emerald-400 text-2xl sm:text-3xl font-bold font-mono">
                 ✓ CORRECT
               </div>
             ) : (
-              <div className="text-rose-400 text-3xl font-bold font-mono">
+              <div className="text-rose-400 text-2xl sm:text-3xl font-bold font-mono">
                 ✕ INCORRECT
               </div>
             )}
@@ -492,13 +551,13 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
 
         {/* Debrief Phase */}
         {phase === 'debrief' && debriefStats && (
-          <div className="max-w-xl bg-neutral-950 border border-neutral-800 p-8 rounded-lg space-y-6 text-left">
+          <div className="max-w-xl w-full mx-auto bg-neutral-950 border border-neutral-800 p-5 sm:p-8 rounded space-y-4 sm:space-y-6 text-left max-h-[85vh] overflow-y-auto">
             <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
               <CheckCircle2 className="w-4 h-4" />
               <span>SESSION RECORDED SUCCESSFULLY</span>
             </div>
 
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               Behavioral Performance Debrief
             </h2>
 
@@ -506,24 +565,24 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
               Your reaction time latencies and choices have been logged with frame-locked precision.
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 font-mono text-xs pt-1 sm:pt-2">
               <div className="bg-neutral-900 p-3 rounded border border-neutral-800">
                 <span className="text-neutral-500 block text-[11px]">Mean RT</span>
-                <span className="text-lg font-bold text-white tabular-nums">{debriefStats.meanRt} ms</span>
+                <span className="text-base sm:text-lg font-bold text-white tabular-nums">{debriefStats.meanRt} ms</span>
               </div>
               <div className="bg-neutral-900 p-3 rounded border border-neutral-800">
                 <span className="text-neutral-500 block text-[11px]">Accuracy</span>
-                <span className="text-lg font-bold text-emerald-400 tabular-nums">{debriefStats.accuracyPercent}%</span>
+                <span className="text-base sm:text-lg font-bold text-emerald-400 tabular-nums">{debriefStats.accuracyPercent}%</span>
               </div>
-              <div className="bg-neutral-900 p-3 rounded border border-neutral-800">
+              <div className="bg-neutral-900 p-3 rounded border border-neutral-800 col-span-2 sm:col-span-1">
                 <span className="text-neutral-500 block text-[11px]">Completed Trials</span>
-                <span className="text-lg font-bold text-cyan-400 tabular-nums">{debriefStats.totalTrials}</span>
+                <span className="text-base sm:text-lg font-bold text-[#007fd7] tabular-nums">{debriefStats.totalTrials}</span>
               </div>
             </div>
 
             {debriefStats.effectDelta !== undefined && (
-              <div className="p-4 bg-neutral-900/90 rounded border border-cyan-900/50 space-y-2 font-mono text-xs">
-                <span className="text-cyan-400 font-semibold block uppercase">
+              <div className="p-3.5 sm:p-4 bg-neutral-900/90 rounded border border-neutral-800 space-y-2 font-mono text-xs">
+                <span className="text-[#007fd7] font-semibold block uppercase">
                   Empirical Cognitive Interference Effect
                 </span>
                 <div className="flex justify-between text-neutral-300">
@@ -536,18 +595,18 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
                 </div>
                 <div className="pt-1 border-t border-neutral-800 flex justify-between text-white font-bold">
                   <span>Interference Cost (Δ):</span>
-                  <span className="text-cyan-300 tabular-nums">+{debriefStats.effectDelta} ms</span>
+                  <span className="text-neutral-200 tabular-nums">+{debriefStats.effectDelta} ms</span>
                 </div>
               </div>
             )}
 
-            <div className="pt-2 flex items-center justify-between border-t border-neutral-900">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-neutral-900">
               <span className="text-xs font-mono text-neutral-500">
                 Code: {experiment.recruitment.completionCode}
               </span>
               <button
                 onClick={handleSaveAndExit}
-                className="px-6 py-2 text-xs font-semibold text-neutral-950 bg-cyan-400 rounded hover:bg-cyan-300 transition-colors"
+                className="px-5 py-2.5 text-xs font-medium text-white bg-[#007fd7] rounded hover:bg-[#006cb8] transition-colors text-center"
               >
                 Save Data & Return to Dashboard
               </button>
@@ -557,14 +616,14 @@ export const LabRunner: React.FC<LabRunnerProps> = ({
       </div>
 
       {/* Bottom Key Response Guide (During Task) */}
-      <div className="px-6 py-3 border-t border-neutral-900 bg-neutral-950 text-xs font-mono text-neutral-500 flex items-center justify-between">
+      <div className="px-4 sm:px-6 py-2.5 sm:py-3 border-t border-neutral-900 bg-neutral-950 text-xs font-mono text-neutral-500 flex items-center justify-between">
         <div>
           {phase === 'stimulus' && currentTrial && (
             <span>Target response: <strong className="text-neutral-300">{currentTrial.correctKey}</strong></span>
           )}
         </div>
         <div>
-          <span>Focus Loss Events: <strong className="text-neutral-400">{focusLossCount}</strong></span>
+          <span>Focus Losses: <strong className="text-neutral-400">{focusLossCount}</strong></span>
         </div>
       </div>
     </div>

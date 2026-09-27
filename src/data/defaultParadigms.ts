@@ -7,7 +7,7 @@ export const DEFAULT_EXPERIMENTS: Experiment[] = [
     paradigmType: 'stroop',
     description: 'Gold-standard cognitive test measuring selective visual attention, processing speed, and executive inhibitory control through congruent vs incongruent color-word stimuli.',
     version: '2.4.0',
-    author: 'Dr. Elena Vance, Cognitive Systems Lab',
+    author: 'Cognitive Systems Laboratory',
     createdAt: '2026-08-14T09:00:00Z',
     lastModified: '2026-09-20T14:30:00Z',
     status: 'active_collection',

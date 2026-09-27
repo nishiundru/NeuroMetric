@@ -15,6 +15,7 @@ import { AnalyticsDashboard } from './components/AnalyticsDashboard';
 import { TimingCalibration } from './components/TimingCalibration';
 import { NewExperimentModal } from './components/NewExperimentModal';
 import { ProtocolExportModal } from './components/ProtocolExportModal';
+import { Layers, Sliders, Play, BarChart2, Activity } from 'lucide-react';
 
 export default function App() {
   // Experiments state
@@ -121,7 +122,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#f8f9fa] text-[#3f3f3f] flex flex-col font-sans">
       {/* 3-Zone Top Navigation Contract */}
       <Header
         activeTab={activeTab}
@@ -132,7 +133,7 @@ export default function App() {
       />
 
       {/* Main Workspace Stage */}
-      <main className="flex-1 pb-16">
+      <main className="flex-1 pb-20 md:pb-16">
         {activeTab === 'experiments' && (
           <ExperimentList
             experiments={experiments}
@@ -178,27 +179,66 @@ export default function App() {
         )}
       </main>
 
+      {/* Mobile Fixed Bottom Tab Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-[#e2e2e2] px-2 py-1.5 flex items-center justify-around text-[10px] font-medium text-[#6b7280]">
+        <button
+          onClick={() => setActiveTab('experiments')}
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded transition-colors ${activeTab === 'experiments' ? 'text-[#007fd7] font-semibold' : 'hover:text-[#3f3f3f]'}`}
+        >
+          <Layers className="w-4 h-4" />
+          <span>Studies</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('builder')}
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded transition-colors ${activeTab === 'builder' ? 'text-[#007fd7] font-semibold' : 'hover:text-[#3f3f3f]'}`}
+        >
+          <Sliders className="w-4 h-4" />
+          <span>Builder</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('runner')}
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded transition-colors ${activeTab === 'runner' ? 'text-[#007fd7] font-semibold' : 'hover:text-[#3f3f3f]'}`}
+        >
+          <Play className="w-4 h-4" />
+          <span>Run</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('analytics')}
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded transition-colors ${activeTab === 'analytics' ? 'text-[#007fd7] font-semibold' : 'hover:text-[#3f3f3f]'}`}
+        >
+          <BarChart2 className="w-4 h-4" />
+          <span>Data</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('calibration')}
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded transition-colors ${activeTab === 'calibration' ? 'text-[#007fd7] font-semibold' : 'hover:text-[#3f3f3f]'}`}
+        >
+          <Activity className="w-4 h-4" />
+          <span>Timing</span>
+        </button>
+      </nav>
+
       {/* Institutional Open Science Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-8 px-4 sm:px-6 lg:px-8 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 font-mono">
+      <footer className="border-t border-[#e2e2e2] bg-white py-6 sm:py-8 px-4 sm:px-6 lg:px-8 text-xs text-[#6b7280]">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 font-mono text-center sm:text-left">
           <div>
-            <span className="text-slate-400 font-semibold">NeuroMetric Behavioral Platform</span>
-            <span className="mx-2">·</span>
-            <span>Open Science Framework (OSF) Compatible</span>
-            <span className="mx-2">·</span>
-            <span>Sub-Millisecond VSYNC Instrumentation</span>
+            <span className="text-[#3f3f3f] font-semibold">NeuroMetric Behavioral Platform</span>
+            <span className="mx-2 hidden sm:inline">·</span>
+            <span className="block sm:inline mt-1 sm:mt-0">Open Science Framework (OSF) Compatible</span>
+            <span className="mx-2 hidden sm:inline">·</span>
+            <span className="block sm:inline mt-1 sm:mt-0">Sub-Millisecond VSYNC Instrumentation</span>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4 sm:gap-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#e2e2e2] w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('calibration')}
-              className="hover:text-slate-300 transition-colors"
+              className="hover:text-[#007fd7] transition-colors"
             >
               Hardware Latency Diagnostic
             </button>
             <button
               onClick={() => setIsExportModalOpen(true)}
-              className="hover:text-slate-300 transition-colors"
+              className="hover:text-[#007fd7] transition-colors"
             >
               Protocol Schema Specification
             </button>
